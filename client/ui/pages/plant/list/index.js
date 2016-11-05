@@ -9,13 +9,14 @@ export default React.createClass({
     return {
       list: [],
       query: {},
-      count: limit
+      count: limit,
+      filter: ''
     }
   },
-  getData(count) {
+  getData() {
     let self = this
-    const {query} = this.state
-    Meteor.call('plant.list', {query, limit: count}, function (error, list) {
+    const {query, filter, count} = this.state
+    Meteor.call('plant.list', {query: query, limit: count, filter: filter}, function (error, list) {
       if (error) {
         console.log('error', error)
         return
@@ -24,23 +25,35 @@ export default React.createClass({
     })
   },
   componentDidMount() {
-    this.getData(limit)
+    this.getData()
   },
   viewItem(_id) {
     browserHistory.push('/plant/' + _id)
   },
+  onFilterChange(e) {
+    this.setState({filter: e.target.value}, this.getData)
+  },
   loadMore() {
     let {count} = this.state
     count += limit
-    this.setState({ count: count })
-    this.getData(count)
+    this.setState({ count: count }, this.getData)
   },
   render() {
-    const {list, count} = this.state
+    const {list, count, filter} = this.state
 
     return (
       <div className='page__bd'>
         <div className='weui-cells'>
+          <div className='weui-cell'>
+            <div className='weui-cell__bd'>
+              <input
+                className='weui-input'
+                value={filter}
+                onChange={this.onFilterChange}
+                type='text'
+                placeholder='请输入名称或者学名' />
+            </div>
+          </div>
           {list.map((element, i) => {
              const {_id, name} = element
              return (
@@ -54,10 +67,17 @@ export default React.createClass({
              )
            })}
         </div>
-        <If condition={count < 1000}>
-          <div className='load-more'>
-            <a onClick={this.loadMore} className='weui-btn weui-btn_plain-primary'>加载更多</a>
-          </div>
+        <If condition={list.length <= 0}>
+          <Then>
+            <div className='weui-loadmore weui-loadmore_line'>
+              <span className='weui-loadmore__tips'>暂无数据</span>
+            </div>
+          </Then>
+          <Else>
+            <div className='load-more'>
+              <a onClick={this.loadMore} className='weui-btn weui-btn_plain-primary'>加载更多</a>
+            </div>
+          </Else>
         </If>
       </div>
     )

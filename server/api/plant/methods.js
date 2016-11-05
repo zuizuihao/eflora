@@ -4,7 +4,8 @@ Meteor.methods({
   'plant.list': function (data) {
     check(data, {
       query: Object,
-      limit: Number
+      limit: Number,
+      filter: String
     })
 
     return Plant.list(data)
