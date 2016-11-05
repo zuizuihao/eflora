@@ -20,7 +20,6 @@ export default React.createClass({
         console.log('error', error)
         return
       }
-      console.log(item);
       self.setState({item: new Plant(item)})
     })
   },

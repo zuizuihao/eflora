@@ -1,18 +1,21 @@
 import React from 'react'
 import { browserHistory } from 'react-router'
+import { If, Then, Else } from 'react-if'
+
+const limit = 10
 
 export default React.createClass({
   getInitialState() {
     return {
       list: [],
       query: {},
-      limit: 10
+      count: limit
     }
   },
-  getData() {
+  getData(count) {
     let self = this
-    const {query, limit} = this.state
-    Meteor.call('plant.list', {query, limit}, function (error, list) {
+    const {query} = this.state
+    Meteor.call('plant.list', {query, limit: count}, function (error, list) {
       if (error) {
         console.log('error', error)
         return
@@ -21,13 +24,19 @@ export default React.createClass({
     })
   },
   componentDidMount() {
-    this.getData()
+    this.getData(limit)
   },
   viewItem(_id) {
     browserHistory.push('/plant/' + _id)
   },
+  loadMore() {
+    let {count} = this.state
+    count += limit
+    this.setState({ count: count })
+    this.getData(count)
+  },
   render() {
-    const {list} = this.state
+    const {list, count} = this.state
 
     return (
       <div className='page__bd'>
@@ -45,6 +54,11 @@ export default React.createClass({
              )
            })}
         </div>
+        <If condition={count < 1000}>
+          <div className='load-more'>
+            <a onClick={this.loadMore}>加载更多</a>
+          </div>
+        </If>
       </div>
     )
   }

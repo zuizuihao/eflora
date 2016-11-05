@@ -1,0 +1,29 @@
+.load-more {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+  margin-left: 35%;
+  border: 1px solid #55B9EC;
+  border-color: #55B9EC;
+  display: block;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  background: none;
+  height: 1.5rem;
+  white-space: nowrap;
+  position: relative;
+  text-overflow: ellipsis;
+  font-size: 0.7rem;
+  font-family: inherit;
+  cursor: pointer;
+  width: 5rem;
+  line-height: 1.5rem;
+}
+
+.load-more a {
+  color: #55B9EC
+}
