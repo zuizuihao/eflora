@@ -2,7 +2,7 @@ import React from 'react'
 import { browserHistory } from 'react-router'
 import { If, Then, Else } from 'react-if'
 
-const limit = 10
+const limit = 20
 
 export default React.createClass({
   getInitialState() {
@@ -56,7 +56,7 @@ export default React.createClass({
         </div>
         <If condition={count < 1000}>
           <div className='load-more'>
-            <a onClick={this.loadMore}>加载更多</a>
+            <a onClick={this.loadMore} className='weui-btn weui-btn_plain-primary'>加载更多</a>
           </div>
         </If>
       </div>
