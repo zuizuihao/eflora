@@ -8,5 +8,12 @@ Meteor.methods({
     })
 
     return Plant.list(data)
+  },
+  'plant.one': function (data) {
+    check(data, {
+      _id: String
+    })
+    
+    return Plant.one(data)
   }
 })
